@@ -4,9 +4,6 @@ import duke.tasks.TaskList;
 import duke.Storage;
 import duke.Ui;
 
-/**
- * Returns an empty Command that does nothing
- */
 public class ByeCommand extends Command {
 
     private static final String EXIT_MESSAGE = "Bye. Hope to see you again soon!";

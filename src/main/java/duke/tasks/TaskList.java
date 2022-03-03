@@ -4,14 +4,17 @@ import java.util.ArrayList;
 
 public class TaskList extends ArrayList<Task> {
 
+    /**
+     * Initialises a TaskList with no elements.
+     */
     public TaskList() {
         super();
     }
 
     /**
-     * Asserts that a call to the ArrayList constructor using the ArrayList(Collection c) signature specifically passes in ArrayList<Task> as the collection.
+     * Initialises a TaskList with the appropriate Collection type.
      *
-     * @param taskList
+     * @param taskList the ArrayList Collection representing a list of tasks
      */
     public TaskList(ArrayList<Task> taskList) {
         super(taskList);

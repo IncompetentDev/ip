@@ -25,12 +25,13 @@ public class TodoCommand extends Command {
     }
 
     /**
-     * Asserts user arguments are legal for Todo by checking whether description and byDate exists. (Key "")
+     * Checks if the user has input arguments (not necessarily valid) for the Todo's description.
+     * Keys: ("")
      *
-     * @throws InvalidArgumentException when argument entered is not an integer
+     * @throws InvalidArgumentException if the values associated with the keys are empty or null
      */
     @Override
-    protected void assertArguments() throws InvalidArgumentException {
+    protected void checkArguments() throws InvalidArgumentException {
         if (arguments.get("").equals("")) {
             throw new InvalidArgumentException(COMMAND_NAME, EMPTY_ARGUMENTS);
         }
@@ -38,12 +39,14 @@ public class TodoCommand extends Command {
 
     /**
      * Creates a Todo task and adds it to taskList
+     *
      * @param taskList the taskList to act on
      * @param ui the provided Ui to output on
      * @param storage the provided filename to update data to
+     * @throws DukeException if any RunTimeExceptions are caught due to invalid user input or IO errors
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
-        assertArguments();
+        checkArguments();
         String description = arguments.get("");
         Todo todoTask = new Todo(description);
         taskList.add(todoTask);

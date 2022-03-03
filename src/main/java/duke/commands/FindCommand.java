@@ -18,20 +18,22 @@ public class FindCommand extends Command {
     private HashMap<String, String> arguments;
 
     /**
-     * Initialises the arguments input by the user for this class.
-     * @param parsedArguments arguments from Parser
+     * Initialises the arguments input by the user.
+     *
+     * @param parsedArguments parsed arguments representing a mapping of named arguments to the respective actual argument
      */
     public FindCommand(HashMap<String, String> parsedArguments) {
         this.arguments = parsedArguments;
     }
 
     /**
-     * Asserts user arguments have either a description to search
+     * Checks description to search is not empty.
+     * Keys: ("")
      *
-     * @throws InvalidArgumentException when argument entered is not an integer
+     * @throws InvalidArgumentException if argument entered is not an integer
      */
     @Override
-    protected void assertArguments() throws InvalidArgumentException {
+    protected void checkArguments() throws InvalidArgumentException {
         String searchDescription = arguments.get("");
         boolean isDescriptionEmpty = (searchDescription == null || searchDescription.equals(""));
         if (isDescriptionEmpty) {
@@ -41,17 +43,18 @@ public class FindCommand extends Command {
 
     /**
      * Searches for tasks in the list based on an O(n) iterative search on the ArrayList
+     *
      * @param taskList the taskList to act on
      * @param ui the provided Ui to output on
      * @param storage the provided filename to update data to
+     * @throws DukeException if any RunTimeExceptions are caught due to invalid user input
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
-
-        assertArguments();
+        checkArguments();
         ui.showOutput(FIND_PRE_MESSAGE_FORMAT);
         for (int i = 0; i<taskList.size(); i++) {
             Task taskToSearch = taskList.get(i);
-            if (matches(taskToSearch)) {
+            if (isMatch(taskToSearch)) {
                 String taskInfo = taskToSearch.toString();
                 String formattedTaskInfo = String.format(FIND_MESSAGE_FORMAT, i+1, taskInfo);
                 ui.showOutput(formattedTaskInfo);
@@ -59,7 +62,13 @@ public class FindCommand extends Command {
         }
     }
 
-    private boolean matches(Task taskToSearch) {
+    /**
+     * Given a task, check if its description corresponds to the description to search for as given in the user argument.
+     *
+     * @param taskToSearch task to search for
+     * @return a boolean indicating if the description to be searched for is found in the given Task
+     */
+    private boolean isMatch(Task taskToSearch) {
         String searchDescription = arguments.get("");
         String description = taskToSearch.getDescription();
         boolean isMatchDescription = description.contains(searchDescription);

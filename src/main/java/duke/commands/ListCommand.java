@@ -11,9 +11,11 @@ public class ListCommand extends Command {
 
     /**
      * Lists out all tasks and their corresponding information.
+     *
      * @param taskList the taskList to act on
      * @param ui the provided Ui to output on
      * @param storage the provided filename to update data to
+     * @throws DukeException if any RunTimeExceptions are caught
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
         ui.showOutput(LIST_PRE_MESSAGE_FORMAT);

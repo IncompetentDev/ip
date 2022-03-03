@@ -6,17 +6,16 @@ import java.util.Queue;
 
 public class Deadline extends Task {
 
-    // toString format string
     private static final String DEADLINE_TOSTRING_FORMAT_STRING = "[%c][%c] %s (by: %s)";
-    private static final String BY_DATE_DATETIME_FORMAT = "d/M/y HHmm";
+    private static final String BY_DATETIME_FORMAT = "d/M/y HHmm";
 
     protected LocalDateTime byDateTime;
 
     /**
-     * Create a Deadline with isDone set to false, description of choice and byDate of choice
+     * Creates a Deadline task with a specified description, a specified date and time representing when the task is due, and sets the Deadline task as not done
      *
-     * @param description Description of the Task to be created
-     * @param byDateTime String representing deadline
+     * @param description description of the Task to be created
+     * @param byDateTime date and time of the deadline
      */
     public Deadline(String description, LocalDateTime byDateTime) {
         this.description = description;
@@ -26,9 +25,9 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the byDate associated with deadline
+     * Returns the byDateTime associated with deadline
      *
-     * @return byDate
+     * @return a date and time representing the byDateTime of this Deadline task
      */
     public LocalDateTime getByDateTime() {
         return this.byDateTime;
@@ -39,14 +38,25 @@ public class Deadline extends Task {
         return String.format(DEADLINE_TOSTRING_FORMAT_STRING, this.getTag(), this.getIsDone(), this.getDescription(), this.getByDateTimeAsString());
     }
 
+    /**
+     * Writes, in order, the data of this Deadline to be written to the data file
+     * Calls the base Task's toDataFile method while adding the byDateTime information for this Deadline task.
+     *
+     * @param infoToWrite the FIFO queue which will be written to the data file.
+     */
     @Override
-    public void getFileWriterFormatString(Queue<String> infoToWrite) {
-        super.getFileWriterFormatString(infoToWrite);
+    public void toDataFile(Queue<String> infoToWrite) {
+        super.toDataFile(infoToWrite);
         infoToWrite.add(getByDateTimeAsString());
     }
 
+    /**
+     * Returns the date and time of deadline
+     *
+     * @return the date and time of this deadline in the same format as the recognised user input for date time
+     */
     public String getByDateTimeAsString() {
-        DateTimeFormatter byDateTimeFormat = DateTimeFormatter.ofPattern(BY_DATE_DATETIME_FORMAT);
+        DateTimeFormatter byDateTimeFormat = DateTimeFormatter.ofPattern(BY_DATETIME_FORMAT);
         String getByDateTimeString = this.byDateTime.format(byDateTimeFormat);
         return getByDateTimeString;
     }

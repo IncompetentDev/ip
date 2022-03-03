@@ -15,10 +15,12 @@ public class Event extends Task {
     protected LocalDateTime atDateTimeEnd;
 
     /**
-     * Create an Event with isDone set to false, description of choice and atDate of choice
+     * Creates an Event task with a specified description, a specified date and time representing when the event starts and end, and sets Event task as not done
+     * It is assumed that events will have the same start and end date, only the time will differ.
      *
-     * @param description Description of the Task to be created
-     * @param atDate String representing event time
+     * @param description description of the Task to be created
+     * @param atDateTimeStart Date and time of when event starts
+     * @param atDateTimeEnd Date and time of when event ends
      */
     public Event(String description, LocalDateTime atDateTimeStart, LocalDateTime atDateTimeEnd) {
         this.description = description;
@@ -28,35 +30,28 @@ public class Event extends Task {
         this.tag = 'E';
     }
 
-    /**
-     * Returns the atDate associated with event
-     *
-     * @return byDate
-     */
-    public LocalDateTime getAtDateTimeStart() {
-        return this.atDateTimeStart;
-    }
-
-    /**
-     * Returns the atDate associated with event
-     *
-     * @return byDate
-     */
-    public LocalDateTime getAtDateTimeEnd() {
-        return this.atDateTimeEnd;
-    }
-
     @Override
     public String toString() {
         return String.format(EVENT_TOSTRING_FORMAT_STRING, this.getTag(), this.getIsDone(), this.getDescription(), this.getAtDateTimeAsString());
     }
 
+    /**
+     * Writes, in order, the data of this Deadline to be written to the data file
+     * Calls the base Task's toDataFile while adding the atDateTime information for this Event task.
+     *
+     * @param infoToWrite the FIFO queue which will be written to the data file.
+     */
     @Override
-    public void getFileWriterFormatString(Queue<String> infoToWrite) {
-        super.getFileWriterFormatString(infoToWrite);
+    public void toDataFile(Queue<String> infoToWrite) {
+        super.toDataFile(infoToWrite);
         infoToWrite.add(getAtDateTimeAsString());
     }
 
+    /**
+     * Returns a string representation of this Event's start and end DateTime.
+     *
+     * @return a String representing the start and end DateTime of this event, into a format similar to how the user would input the DateTime.
+     */
     public String getAtDateTimeAsString() {
         DateTimeFormatter atDateFormat = DateTimeFormatter.ofPattern(DATE_FORMAT);
         DateTimeFormatter atTimeFormat = DateTimeFormatter.ofPattern(TIME_FORMAT);

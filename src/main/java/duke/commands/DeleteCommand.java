@@ -22,20 +22,22 @@ public class DeleteCommand extends Command {
     private HashMap<String, String> arguments;
 
     /**
-     * Initialises the arguments input by the user for this class.
-     * @param parsedArguments arguments from Parser
+     * Initialises the arguments input by the user.
+     *
+     * @param parsedArguments parsed arguments representing a mapping of named arguments to the respective actual argument
      */
     public DeleteCommand(HashMap<String, String> parsedArguments) {
         this.arguments = parsedArguments;
     }
 
     /**
-     * Asserts user arguments can be converted to integer
+     * Checks if the user arguments can be converted to integer
+     * Keys: ("")
      *
-     * @throws InvalidArgumentException when argument entered is not an integer
+     * @throws InvalidArgumentException if argument entered is not an integer
      */
     @Override
-    protected void assertArguments() throws InvalidArgumentException {
+    protected void checkArguments() throws InvalidArgumentException {
         try {
             this.index = Integer.parseInt(arguments.get(""))-1;
         } catch (NumberFormatException e) {
@@ -44,19 +46,22 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Deletes a task using ArrayList's built in remove.
+     * Deletes a task, with the task number specified by user.
+     *
      * @param taskList the taskList to act on
      * @param ui the provided Ui to output on
      * @param storage the provided filename to update data to
+     * @throws DukeException if any RunTimeExceptions are caught due to invalid user input or IO errors
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
         try {
-            assertArguments();
+            checkArguments();
             Task taskToRemove = taskList.remove(index);
             String output = String.format(TASK_DELETED_MESSAGE_FORMAT, taskToRemove.toString(), taskList.size());
             ui.showOutput(output);
             storage.write(taskList);
         } catch (IndexOutOfBoundsException e) {
+            // User specified task number does not correspond to any task.
             InvalidArgumentException exception = new InvalidArgumentException(COMMAND_NAME, INVALID_TASK);
             throw exception;
         }

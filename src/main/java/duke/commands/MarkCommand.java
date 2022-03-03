@@ -21,20 +21,22 @@ public class MarkCommand extends Command {
     private HashMap<String, String> arguments;
 
     /**
-     * Initialises the arguments input by the user for this class.
-     * @param parsedArguments arguments from Parser
+     * Initialises the arguments input by the user.
+     *
+     * @param parsedArguments parsed arguments representing a mapping of named arguments to the respective actual argument
      */
     public MarkCommand(HashMap<String, String> parsedArguments) {
         this.arguments = parsedArguments;
     }
 
     /**
-     * Asserts user arguments can be converted to integer
+     * Checks if the user arguments can be converted to integer
+     * Keys: ("")
      *
-     * @throws InvalidArgumentException when argument entered is not an integer
+     * @throws InvalidArgumentException if argument entered is not an integer
      */
     @Override
-    protected void assertArguments() throws InvalidArgumentException {
+    protected void checkArguments() throws InvalidArgumentException {
         try {
             this.index = Integer.parseInt(arguments.get(""))-1;
         } catch (NumberFormatException e) {
@@ -43,20 +45,23 @@ public class MarkCommand extends Command {
     }
 
     /**
-     * Marks a task as done, with index specified by user.
+     * Marks a task as done, with the task number specified by user.
+     *
      * @param taskList the taskList to act on
      * @param ui the provided Ui to output on
      * @param storage the provided filename to update data to
+     * @throws DukeException if any RunTimeExceptions are caught due to invalid user input or IO errors
      */
     public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
         try {
-            assertArguments();
+            checkArguments();
             Task taskToMark = taskList.get(index);
             taskToMark.setIsDone(true);
             String output = String.format(TASK_MARKED_MESSAGE_FORMAT,taskToMark.toString());
             ui.showOutput(output);
             storage.write(taskList);
         } catch (IndexOutOfBoundsException e) {
+            // User specified task number does not correspond to any task.
             InvalidArgumentException exception = new InvalidArgumentException(COMMAND_NAME, INVALID_TASK);
             throw exception;
         }

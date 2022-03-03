@@ -4,12 +4,20 @@ import duke.commands.Command;
 import duke.exceptions.DukeException;
 import duke.tasks.TaskList;
 
+/**
+ * Main entry point and class for the Duke App
+ */
 public class Duke {
 
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
 
+    /**
+     * Initialises Ui and Storage with an existing data file or a new TaskList
+     *
+     * @param filePath the path to data file
+     */
     public Duke(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);

@@ -3,7 +3,7 @@ package duke.tasks;
 public class Todo extends Task {
 
     /**
-     * Create a Todo with isDone set to false and description of choice
+     * Creates a Todo task with a specified description and sets the Todo task as not done
      *
      * @param description Description of the Task to be created
      */

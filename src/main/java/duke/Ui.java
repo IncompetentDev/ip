@@ -20,6 +20,9 @@ public class Ui {
         scannerInput = new Scanner(System.in);
     }
 
+    /**
+     * Prints the welcome message when user starts Duke
+     */
     public void showWelcome() {
         System.out.println(LOGO);
         this.showLine();
@@ -27,10 +30,20 @@ public class Ui {
         this.showLine();
     }
 
+    /**
+     * Prints any error messages
+     *
+     * @param errorMessage the error message associated with an exception
+     */
     public void showError(String errorMessage) {
         System.out.println(errorMessage);
     }
 
+    /**
+     * Reads a line of input from the user
+     *
+     * @return a line of the user input
+     */
     public String readCommand() {
         String userInput = scannerInput.nextLine();
         return userInput;
@@ -44,6 +57,11 @@ public class Ui {
         System.out.println("Error loading duke.txt!");
     }
 
+    /**
+     * Prints output
+     *
+     * @param output
+     */
     public void showOutput(String output) {
         System.out.println(output);
     }

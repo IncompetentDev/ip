@@ -23,8 +23,10 @@ public class Storage {
     private static final String FILEIO_ERR_CREATING_FILE = "creating data file.";
     private static final String FILEIO_ERR_WRITING_FILE = "writing to data file.";
     private String filePath;
+
     /**
      * Reads from filePath and constructs a TaskList based on the given file
+     *
      * @param filePath the file to read from
      */
     public Storage(String filePath) {
@@ -62,12 +64,24 @@ public class Storage {
         return bufferTaskList;
     }
 
+    /**
+     * Creates the required files/directories, then writes to the data file specified by this Storage object's filePath
+     *
+     * @param taskList list of tasks to write to file
+     * @throws FileWriteException if any IO error occurs while writing
+     */
     public void write(TaskList taskList) throws FileWriteException {
         File fileToWriteTo = new File(filePath);
         createRequiredFiles(fileToWriteTo);
         writeToFile(fileToWriteTo, taskList);
     }
 
+    /**
+     * Based on the File object, create the required directories and then create the data file.
+     *
+     * @param fileToWriteTo data file
+     * @throws FileWriteException if any IO error occurs while writing
+     */
     private void createRequiredFiles(File fileToWriteTo) throws FileWriteException {
         try {
             fileToWriteTo.getAbsoluteFile().getParentFile().mkdirs();
@@ -78,14 +92,20 @@ public class Storage {
         }
     }
 
+    /**
+     * Based on the File object and taskList, write a proper representation of the taskList into the File.
+     *
+     * @param fileToWriteTo data file
+     * @param taskList list of tasks
+     * @throws FileWriteException if any IO error occurs while writing
+     */
     private void writeToFile(File fileToWriteTo, TaskList taskList) throws FileWriteException {
         try {
-            //overwrite data
             FileWriter writer = new FileWriter(fileToWriteTo, false);
             for (int i = 0; i<taskList.size(); i++) {
                 Queue<String> infoToWrite = new LinkedList<String>();
                 Task task = taskList.get(i);
-                task.getFileWriterFormatString(infoToWrite);
+                task.toDataFile(infoToWrite);
                 String stringToWrite = infoToWrite.poll();
                 // no information to write to begin with
                 if (stringToWrite == null) {

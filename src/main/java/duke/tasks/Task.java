@@ -7,13 +7,12 @@ public abstract class Task {
     protected boolean isDone;
     protected char tag;
 
-    // toString format string
     protected static final String TOSTRING_FORMAT_STRING = "[%c][%c] %s";
 
     /**
      * Returns a String representing the description for the Task.
      *
-     * @return Description of Task
+     * @return description of Task
      */
     public String getDescription() {
         return this.description;
@@ -39,6 +38,8 @@ public abstract class Task {
 
     /**
      * Return the tag assigned to the class.
+     *
+     * @return tag character of task type
      */
     public char getTag() {
         return this.tag;
@@ -49,7 +50,12 @@ public abstract class Task {
         return String.format(Task.TOSTRING_FORMAT_STRING, this.getTag(), this.getIsDone(), this.getDescription());
     }
 
-    public void getFileWriterFormatString(Queue<String> infoToWrite) {
+    /**
+     * Writes, in order, the data of a Task to be written to the data file
+     *
+     * @param infoToWrite the FIFO Queue which will be written to the data file.
+     */
+    public void toDataFile(Queue<String> infoToWrite) {
         infoToWrite.add(String.valueOf(this.getTag()));
         infoToWrite.add(this.isDone ? "1" : "0");
         infoToWrite.add(this.getDescription());
